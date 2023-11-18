@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Weihnachtlicher Adventskalender</title>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50; /* Dunkle Hintergrundfarbe */
+            font-family: 'Arial', sans-serif;
+        }
+        .window {
+            width: 90vw; /* Anpassung für kleinere Bildschirme */
+            max-width: 150px;
+            height: 150px;
+            border: 2px solid #fff; /* Weiße Fensterrahmen */
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #e74c3c; /* Rote geschlossene Fenster */
+            color: #fff; /* Weiße Textfarbe für geschlossene Fenster */
+        }
+        .open {
+            background-color: #f39c12; /* Orange geöffnete Fenster */
+            color: #000; /* Schwarze Textfarbe für geöffnete Fenster */
+        }
+        .hint {
+            width: 90vw; /* Anpassung für kleinere Bildschirme */
+            max-width: 300px;
+            display: none;
+            text-align: center;
+            padding: 10px;
+            margin-top: 5px;
+            background-color: #ecf0f1; /* Hintergrundfarbe des Hinweisfelds */
+            color: #333; /* Dunkle Textfarbe für Hinweise */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+		#countdown {
+            font-size: 20px;
+            color: #fff; /* Weiße Textfarbe für den Countdown */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="window closed" id="window1" onclick="openWindow(1)">1</div>
+    <div class="window closed" id="window2" onclick="openWindow(2)">2</div>
+    <div class="window closed" id="window3" onclick="openWindow(3)">3</div>
+    <div class="window closed" id="window4" onclick="openWindow(4)">4</div>
+    <div class="window closed" id="window5" onclick="openWindow(5)">5</div>
+    <div class="window closed" id="window6" onclick="openWindow(6)">6</div>
+    <div class="window closed" id="window7" onclick="openWindow(7)">7</div>
+    <div class="window closed" id="window8" onclick="openWindow(8)">8</div>
+    <div class="window closed" id="window9" onclick="openWindow(9)">9</div>
+    <div class="window closed" id="window10" onclick="openWindow(10)">10</div>
+
+    <!-- Verschlüsselte Hinweise -->
+    <div class="hint" id="hint1">VW5zZXJlIEdlc2VsbHNjaGFmdCBiZXN0ZWh0IGxlZGlnbGljaCBhdXMgendlaSBTZWVsZW4sIGRpZSBnZW1laW5zYW0gaWhyZSBlaWdlbmUgV2VsdCBlcnNjaGFmZmVuLg==</div>
+    <div class="hint" id="hint2">MyBNb25kZSB3ZXJkZW4gd2lyIHNlaGVuLg==</div>
+    <div class="hint" id="hint3">V2lyIHNpbmQgYXVzc2VyaGFsYiBkZXIgcHJhY2h0dm9sbGVuIFN0YWR0IG1pdCBkZW0gbXVzaWthbGlzY2hlbiBFcmJlLCBkZXJlbiBDaGFybWUgdm9uIGhpc3RvcmlzY2hlciBBcmNoaXRla3R1ciB1bmQga3VsdHVyZWxsZXIgVmllbGZhbHQgZ2V6ZWljaG5ldCBpc3Qgc293aWUgZGVtIEdyYW50IGFsbGVyIE1lbnNjaGVuLg0KDQoNCg0KDQoNCg==</div>
+    <div class="hint" id="hint4">RHUgd2lyc3Qgdm9yYXVzc2ljaHRsaWNoIGluIGFuZ2VuZWhtIHRyb2NrZW5lbiBHZWZpbGRlbiB2ZXJ3ZWlsZW4uDQo=</div>
+    <div class="hint" id="hint5">U2VoZW4gd2lyc3QgZHUgS3JlYXR1cmVuLCBkZXJlbiBMaW5pZSBhdXMgZGVuIGdlaGVpbW5pc3ZvbGxlbiBMYW5kZW4gTm9yZGFtZXJpa2FzIGVudHNwcmluZ3QsIHdvIEdlc2NoaWNodGVuIGRlciBOYXR1ciB1bmQgZGVzIExlYmVucyBpbiBlaW5lbSB2ZXJib3JnZW5lbiBUYW56IGRlciBFbGVtZW50ZSB2ZXJ3b2JlbiBzaW5kLg==</div>
+    <div class="hint" id="hint6">V2lyIHdlcmRlbiBaZXVnZW4gZWluZXMgZmFzemluaWVyZW5kZW4gSGltbWVsc3Bla3Rha2Vscywgd2VubiBkaWUgRHVua2VsaGVpdCB2b24gZWluZW0gbWFnaXNjaGVuIExpY2h0ZXJzcGllbCBlcmxldWNodGV0IHdpcmQu</div>
+    <div class="hint" id="hint7">SW4gZGVyIGtvbW1lbmRlbiBQaGFzZSB1bnNlcmVyIFJlaXNlIHdlcmRlbiB1bnMgZmVkZXJsZWljaHRlIFNjaHdpbmdlbiBkZXIgRnJlaWhlaXQgZHVyY2ggZGllIHdlaXRlbiBIaW1tZWwgdHJhZ2VuLiBJbm1pdHRlbiBkZXIgV29sa2VuIHVuZCBkdXJjaCB1bmVudGRlY2t0ZSBIb3Jpem9udGUgaGlud2VnIHdlcmRlbiB1bnMgdW5zaWNodGJhcmUgV2luZGUgYXVmIHZlcnNjaGx1bmdlbmVuIFBmYWRlbiB6dSBnZWhlaW1uaXN2b2xsZW4gQWJlbnRldWVybiBsZWl0ZW4u</div>
+    <div class="hint" id="hint8">QXVmIHN0ZWluZ2VwZmxhc3RlcnRlbiBTdHJhc3NlbiB3ZXJkZW4gd2lyIHdhbmRlcm4sIGRlcmVuIE5hbWVuIGVpbiBFY2hvIGF1cyB2ZXJnYW5nZW5lbiBaZWl0ZW4gc2luZCwgYWxzIE3DpG5uZXIgR290dGVzIG1pdCBzY2h3YXJ6ZW4gS3V0dGVuIGluIFN0aWxsZSB3YW5kZWx0ZW4gdW5kIG51ciBhbHMgc2Nod2FyemUgQnLDvGRlciBiZXplaWNobmV0IHd1cmRlbi4=</div>
+    <div class="hint" id="hint9">SW4gTm9yd2VnZW5zIGdlaGVpbW5pc3ZvbGxlbiBIYWluZW4gZ2VkZWlodCBlaW5lIFBmbGFuemUgdm9uIHVuYmVncmVpZmxpY2hlciBBbm11dCwgZG9jaCBpaHJlIHphcnRlbiBOYWRlbG4gc2NoaWxkZXJuIGxlaXNlIHZvbiBlaW5lciBIZWltYXQsIGRpZSBpaHIgZW50cmlzc2VuIHd1cmRlLiBVbnRlciBkZW0gc2lsYnJpZ2VuIE1vbmRsaWNodCBlbnRmYWx0ZXQgc2llIHdlaXRlcmhpbiBpaHJlIGdlaGVpbW5pc3ZvbGxlbiBBdXJhIGluIGVpbmVtIG5ldWVuIExhbmQsIGF1ZiBkZXIgU3VjaGUgbmFjaCBlaW5lciBuZXVlbiBWZXJiaW5kdW5nIHp1IGRlbiBNeXN0ZXJpZW4gZGVyIE5hdHVyLg==</div>
+    <div class="hint" id="hint10">VW5kIGdld2lzcyBuaW1tc3QgRHUgRGVpbmVuIE1hc3NrcnVnIHp1ciBCcnVzdCBVbmQgZ2V3aXNzIG5laG0gaWNoIGRlbiBtZWluZW4sIFVuZCB3aXIgbmVobWVuIG5vY2ggZWluZW4gQmVjaGVyIEZyZXVuZGxpY2hrZWl0IERlciBhbHRlbiBaZWl0ZW4gd2VnZW4uDQo=</div>
+
+	<div id="countdown"></div>
+
+    <script>
+        function openWindow(day) {
+            var currentDate = new Date();
+            var openDate = new Date(2023, 11, 15 + day); // Monate in JavaScript sind 0-basiert
+
+            if (currentDate >= openDate) {
+                var hintElement = document.getElementById('hint' + day);
+                hintElement.innerHTML = atob(hintElement.innerHTML); // Base64 entschlüsseln
+                document.getElementById('window' + day).classList.remove('closed');
+                document.getElementById('window' + day).classList.add('open');
+                hintElement.style.display = 'block';
+                alert("Herzlichen Glückwunsch! Du hast das Fenster " + day + " geöffnet!");
+            } else {
+                alert("Das Fenster " + day + " kann erst am " + openDate.toLocaleDateString() + " geöffnet werden.");
+            }
+        }
+		
+		// Countdown-Funktion
+        function updateCountdown() {
+            var currentDate = new Date();
+            var nextWindowDate = new Date(2023, 11, 15 + 1); // Nächstes Fenster öffnet am 19. November 2023
+
+            var timeRemaining = nextWindowDate - currentDate;
+            var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = 'Fenster öffnet in: ' +
+                days + ' Tage, ' +
+                hours + ' Stunden, ' +
+                minutes + ' Minuten, ' +
+                seconds + ' Sekunden.';
+        }
+
+        // Aktualisiere den Countdown alle Sekunde
+        setInterval(updateCountdown, 1000);
+    </script>
+    </script>
+</body>
+</html>
