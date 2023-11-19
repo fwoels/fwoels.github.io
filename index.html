@@ -52,9 +52,57 @@
             color: #fff; /* Weiße Textfarbe für den Countdown */
             margin-top: 10px;
         }
+		
+		button {
+            background-color: #4CAF50; /* Grün */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+		button:hover {
+            background-color: white;
+            color: black;
+        }
+		
+         .snowflake {
+            position: absolute;
+            background-color: #fff;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-10vh);
+            }
+            to {
+                transform: translateY(110vh);
+            }
+        }
     </style>
 </head>
 <body>
+
+	<audio id="backgroundMusic" loop>
+        <source src="https://files.nobadsong.com/wp-content/uploads/2022/12/Andy_Williams_-_Its_the_Most_Wonderful_Time_of_the_Year_Nobadsong.com.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+    </audio>
+	
+	<p>
+		<button onclick="playAudio()">Christmas time! (Starte Audio)</button>
+		<button onclick="pauseAudio();createSnowflakes();">Pause</button>
+	</p>
+
     <div class="window closed" id="window1" onclick="openWindow(1)">1</div>
     <div class="window closed" id="window2" onclick="openWindow(2)">2</div>
     <div class="window closed" id="window3" onclick="openWindow(3)">3</div>
@@ -81,6 +129,38 @@
 	<div id="countdown"></div>
 
     <script>
+	
+		 function playAudio() {
+            document.getElementById('backgroundMusic').play();
+            createSnowflakes(); // Starte Schneefall bei Wiedergabe
+        }
+
+        function pauseAudio() {
+            document.getElementById('backgroundMusic').pause();
+            clearSnowflakes(); // Stoppe Schneefall bei Pause
+        }
+		
+		function createSnowflakes() {
+            // Erstelle Schneeflocken
+            for (let i = 0; i < 50; i++) {
+                createSnowflake();
+            }
+        }
+
+        function createSnowflake() {
+            // Erstelle einzelne Schneeflocke
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(snowflake);
+        }
+
+        function clearSnowflakes() {
+            // Entferne alle Schneeflocken
+            const snowflakes = document.querySelectorAll('.snowflake');
+            snowflakes.forEach(snowflake => snowflake.remove());
+        }
+		
         function openWindow(day) {
             var currentDate = new Date();
             var openDate = new Date(2023, 11, 15 + day); // Monate in JavaScript sind 0-basiert
@@ -117,7 +197,9 @@
 
         // Aktualisiere den Countdown alle Sekunde
         setInterval(updateCountdown, 1000);
-    </script>
+		
+		
+      
     </script>
 </body>
 </html>
