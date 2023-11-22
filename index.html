@@ -195,7 +195,7 @@
 		
         function openWindow(day) {
             var currentDate = new Date();
-            var openDate = new Date(2023, 11, 15 + day); // Monate in JavaScript sind 0-basiert
+            var openDate = new Date(2023, 11, 14 + day); // Monate in JavaScript sind 0-basiert
 
             if (currentDate >= openDate) {
                 var hintElement = document.getElementById('hint' + day);
@@ -212,7 +212,7 @@
 		// Countdown-Funktion
         function updateCountdown() {
             var currentDate = new Date();
-            var nextWindowDate = new Date(2023, 11, 15 + 1); // Nächstes Fenster öffnet am 19. November 2023
+            var nextWindowDate = new Date(2023, 11, 14 + 1); // Nächstes Fenster öffnet am 19. November 2023
 
             var timeRemaining = nextWindowDate - currentDate;
             var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
